@@ -3,12 +3,20 @@ all: build
 
 build:
 	@echo "Building..."
-	
-	@go build -o main cmd/api/main.go
+	@cd src/backend && go build -o ../../main cmd/api/main.go
+
+fe-build:
+	@echo "Building..."
+	@cd src/frontend && npm install
 
 # Run the application
 run:
-	@go run cmd/api/main.go
+	@cd src/backend && go run cmd/api/main.go
+
+# Run the application
+fe-run:
+	@cd src/frontend && npm run dev
+
 
 # Create DB container
 docker-run:
@@ -31,7 +39,7 @@ docker-down:
 # Test the application
 test:
 	@echo "Testing..."
-	@go test ./tests -v
+	@go test ./src/backend/tests -v
 
 # Clean the binary
 clean:
@@ -55,4 +63,4 @@ watch:
 	    fi; \
 	fi
 
-.PHONY: all build run test clean
+.PHONY: all build run docker-run docker-down test clean watch
