@@ -1,3 +1,5 @@
+// src/frontend/vite.config.ts
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
@@ -12,7 +14,8 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            "/health": "http://localhost:50505",
+            "/health": "http://localhost:8080",
+            "/hello": "http://localhost:8080",
         }
     }
 });

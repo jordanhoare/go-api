@@ -1,5 +1,4 @@
-# Build the application
-all: build
+start: fe-build build run
 
 build:
 	@echo "Building..."
@@ -7,11 +6,11 @@ build:
 
 fe-build:
 	@echo "Building..."
-	@cd src/frontend && npm install
+	@cd src/frontend && npm install && npm run build
 
 # Run the application
 run:
-	@cd src/backend && go run cmd/api/main.go
+	@export $$(cat .env | xargs) && cd src/backend && go run cmd/api/main.go
 
 # Run the application
 fe-run:
@@ -39,7 +38,7 @@ docker-down:
 # Test the application
 test:
 	@echo "Testing..."
-	@go test ./src/backend/tests -v
+	@cd src/backend && go test ./tests -v
 
 # Clean the binary
 clean:

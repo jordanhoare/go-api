@@ -1,3 +1,5 @@
+// src/backend/internal/database/database.go
+
 package database
 
 import (
@@ -30,18 +32,19 @@ var (
 )
 
 func New() Service {
-	// Reuse Connection
 	if dbInstance != nil {
 		return dbInstance
 	}
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, port, database)
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Failed to open database connection: %v", err)
 	}
-	dbInstance = &service{
-		db: db,
+	fmt.Println("Database connection opened. Pinging database...")
+	if err = db.Ping(); err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
 	}
+	dbInstance = &service{db: db}
 	return dbInstance
 }
 

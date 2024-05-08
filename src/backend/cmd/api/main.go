@@ -1,3 +1,5 @@
+// src/backend/cmd/api/main.go
+
 package main
 
 import (
@@ -6,7 +8,6 @@ import (
 )
 
 func main() {
-
 	server := server.NewServer()
 
 	err := server.ListenAndServe()

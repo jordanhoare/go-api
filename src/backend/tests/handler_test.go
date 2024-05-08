@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"app/internal/server"
+	"backend/internal/server"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -10,7 +10,7 @@ import (
 
 func TestHandler(t *testing.T) {
 	s := &server.Server{}
-	server := httptest.NewServer(http.HandlerFunc(s.HelloWorldHandler))
+	server := httptest.NewServer(http.HandlerFunc(s.helloHandler))
 	defer server.Close()
 	resp, err := http.Get(server.URL)
 	if err != nil {
@@ -21,7 +21,7 @@ func TestHandler(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Errorf("expected status OK; got %v", resp.Status)
 	}
-	expected := "{\"message\":\"Hello World\"}"
+	expected := "{\"message\":\"Hello World!\"}"
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("error reading response body. Err: %v", err)
