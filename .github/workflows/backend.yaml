@@ -1,0 +1,27 @@
+name: Backend linting
+
+on:
+  push:
+    branches: [main]
+    paths:
+    - "src/backend/**"
+  pull_request:
+    branches: [main]
+    paths:
+    - "src/backend/**"
+
+jobs:
+  golangci-lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.22.0'
+    - name: Run golangci-lint on backend
+      run: |
+        cd ./src/backend
+        go mod tidy
+        go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.49.0
+        golangci-lint run --enable-all
