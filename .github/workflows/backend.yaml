@@ -23,5 +23,5 @@ jobs:
       run: |
         cd ./src/backend
         go mod tidy
-        go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.49.0
+        go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.58.0
         golangci-lint run --enable-all
