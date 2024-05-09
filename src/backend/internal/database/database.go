@@ -7,11 +7,11 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
+	"backend/internal/config"
+
 	_ "github.com/jackc/pgx/v5/stdlib"
-	_ "github.com/joho/godotenv/autoload"
 )
 
 type Service interface {
@@ -22,30 +22,16 @@ type service struct {
 	db *sql.DB
 }
 
-var (
-	database   = os.Getenv("DB_DATABASE")
-	password   = os.Getenv("DB_PASSWORD")
-	username   = os.Getenv("DB_USERNAME")
-	port       = os.Getenv("DB_PORT")
-	host       = os.Getenv("DB_HOST")
-	dbInstance *service
-)
-
-func New() Service {
-	if dbInstance != nil {
-		return dbInstance
-	}
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, port, database)
+func New(cfg config.DatabaseConfig) Service {
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.Database)
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
 		log.Fatalf("Failed to open database connection: %v", err)
 	}
-	fmt.Println("Database connection opened. Pinging database...")
 	if err = db.Ping(); err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	dbInstance = &service{db: db}
-	return dbInstance
+	return &service{db: db}
 }
 
 func (s *service) Health() map[string]string {
