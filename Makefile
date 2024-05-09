@@ -1,4 +1,4 @@
-start: fe-build build run
+start: clean fe-build build run
 
 build:
 	@cd src/backend && go build -o ../../main cmd/api/main.go
