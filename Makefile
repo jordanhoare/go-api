@@ -1,11 +1,9 @@
 start: fe-build build run
 
 build:
-	@echo "Building..."
 	@cd src/backend && go build -o ../../main cmd/api/main.go
 
 fe-build:
-	@echo "Building..."
 	@cd src/frontend && npm install && npm run build
 
 # Run the application
@@ -40,8 +38,10 @@ test:
 	@echo "Testing..."
 	@cd src/backend && go test ./tests -v
 
-# Clean the binary
+# Lint/clean the binary and static files
 clean:
 	@echo "Cleaning..."
 	@rm -f main
+	@rm -rf src/backend/static
 	@cd src/backend && gofmt -w .
+
